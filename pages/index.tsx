@@ -1,7 +1,15 @@
+import styled from "styled-components";
+
 export default function Home() {
+
     return (
-        <div>
+        <Wrapper>
             hello there
-        </div>
+        </Wrapper>
     )
 }
+const Wrapper = styled.div`
+
+  color: red;
+
+`
