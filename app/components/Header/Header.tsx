@@ -4,12 +4,14 @@ import BottomHeader from "./ButtomHeader/BottomHeader"
 import TopHeader from "./TopHeader/TopHeader"
 
 const Header: FC = () => {
-    return (
-        <HeaderWrapper className="header__wrapper">
-            <TopHeader />
-            <BottomHeader />
-        </HeaderWrapper>
-    )
+  return (
+    <HeaderWrapper className="header__wrapper">
+      <TopHeader />
+      <BottomHeader />
+    </HeaderWrapper>
+  )
 }
 export default Header
-const HeaderWrapper = styled.header``
+const HeaderWrapper = styled.header`
+  width: 100%;
+`
