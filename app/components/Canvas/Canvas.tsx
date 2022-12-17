@@ -1,8 +1,15 @@
-import { FC, useEffect, useRef } from "react"
+import { FC, MouseEvent, useEffect, useRef } from "react"
 import styled from "styled-components"
 import useResize from "../../hooks/useResize"
+import useIsDraw from "../../hooks/useIsDraw"
+import { useAppDispatch, useTypedSelector } from "../../store/ReduxStore"
+import { setContext } from "../../store/contextSlice"
 
 const Canvas: FC = () => {
+  const dispatch = useAppDispatch()
+
+  const { ctx } = useTypedSelector((state) => state.Context)
+
   const { width, height } = useResize()
 
   const canvasRef = useRef<null | HTMLCanvasElement>(null)
@@ -10,17 +17,42 @@ const Canvas: FC = () => {
   useEffect(() => {
     const ctx = canvasRef.current?.getContext("2d")
     if (!ctx) return
-    ctx?.beginPath()
-    ctx?.moveTo(100, 100)
-    ctx?.lineTo(110, 110)
-    ctx?.stroke()
-    // ctx.fillStyle = "blue"
-    // ctx.scale(2, 1)
-  })
+    dispatch(setContext(ctx))
+  }, [])
+
+  const { isDrawing, clientY, clientX } = useIsDraw()
+
+  useEffect(() => {
+    if (isDrawing && ctx) {
+      ctx.beginPath()
+
+      ctx?.moveTo(clientX, clientY)
+    }
+  }, [isDrawing])
+
+  const Draw = (e: MouseEvent) => {
+    if (!isDrawing || !ctx) return
+    const offsetLeft = (window.innerWidth - 1280) / 2
+    ctx.lineJoin = "round"
+    ctx.lineWidth = 50
+    ctx.strokeStyle = "red"
+    if (width >= 1280) {
+      ctx?.lineTo(e.clientX - offsetLeft, e.clientY - 80)
+      ctx?.stroke()
+    } else {
+      ctx?.lineTo(e.clientX, e.clientY - 80)
+      ctx?.stroke()
+    }
+  }
 
   return (
     <CanvasWrapper className="canvas__wrapper">
-      <canvas width={width} height={height} ref={canvasRef} />
+      <canvas
+        onMouseMove={Draw}
+        width={width}
+        height={height}
+        ref={canvasRef}
+      />
     </CanvasWrapper>
   )
 }
