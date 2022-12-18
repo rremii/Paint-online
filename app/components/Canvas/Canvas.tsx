@@ -1,14 +1,16 @@
 import { FC, MouseEvent, useEffect, useRef } from "react"
 import styled from "styled-components"
 import useResize from "../../hooks/useResize"
-import useIsDraw from "../../hooks/useIsDraw"
+import useStartDrawing from "../../hooks/useStartDrawing"
 import { useAppDispatch, useTypedSelector } from "../../store/ReduxStore"
-import { setContext } from "../../store/contextSlice"
+import { setCanvas, setContext } from "../../store/contextSlice"
+import useBrush from "../../hooks/useBrush"
+import useRect from "../../hooks/useRect"
 
 const Canvas: FC = () => {
   const dispatch = useAppDispatch()
 
-  const { ctx } = useTypedSelector((state) => state.Context)
+  const { drawType } = useTypedSelector((state) => state.Context)
 
   const { width, height } = useResize()
 
@@ -16,33 +18,20 @@ const Canvas: FC = () => {
 
   useEffect(() => {
     const ctx = canvasRef.current?.getContext("2d")
-    if (!ctx) return
-    dispatch(setContext(ctx))
+    if (ctx && canvasRef.current) {
+      dispatch(setCanvas(canvasRef.current))
+      dispatch(setContext(ctx))
+    }
   }, [])
 
-  const { isDrawing, clientY, clientX } = useIsDraw()
-
-  useEffect(() => {
-    if (isDrawing && ctx) {
-      ctx.beginPath()
-
-      ctx?.moveTo(clientX, clientY)
-    }
-  }, [isDrawing])
+  const { isDrawing, startX, startY } = useStartDrawing(canvasRef.current)
+  const [DrawBrush] = useBrush()
+  const [DrawRect] = useRect()
 
   const Draw = (e: MouseEvent) => {
-    if (!isDrawing || !ctx) return
-    const offsetLeft = (window.innerWidth - 1280) / 2
-    ctx.lineJoin = "round"
-    ctx.lineWidth = 50
-    ctx.strokeStyle = "red"
-    if (width >= 1280) {
-      ctx?.lineTo(e.clientX - offsetLeft, e.clientY - 80)
-      ctx?.stroke()
-    } else {
-      ctx?.lineTo(e.clientX, e.clientY - 80)
-      ctx?.stroke()
-    }
+    if (!isDrawing) return
+    if (drawType === "brush") DrawBrush(e)
+    if (drawType === "rect") DrawRect(e, startX, startY)
   }
 
   return (
