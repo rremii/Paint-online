@@ -2,23 +2,27 @@ import { useEffect, useState } from "react"
 import { useAppDispatch, useTypedSelector } from "../store/ReduxStore"
 import { saveCanvas } from "../store/contextSlice"
 
-const useStartDrawing = (canvas: HTMLCanvasElement | null) => {
+const useStartDrawing = () => {
   const dispatch = useAppDispatch()
 
   const { ctx } = useTypedSelector((state) => state.Context)
+  const { canvas } = useTypedSelector((state) => state.Context)
 
   const [isDrawing, setIsDrawing] = useState(false)
   const [clientX, setClientX] = useState(0)
   const [clientY, setClientY] = useState(0)
 
   const handleMouseDown = (e: MouseEvent) => {
-    if (!canvas) return
     const offsetLeft = (window.innerWidth - 1280) / 2
+    const X = window.innerWidth >= 1280 ? e.clientX - offsetLeft : e.clientX
+    const Y = e.clientY - 80
+    setClientX(X)
+    setClientY(Y)
     setIsDrawing(true)
-    if (window.innerWidth >= 1280) setClientX(e.clientX - offsetLeft)
-    if (window.innerWidth < 1280) setClientX(e.clientX)
-    setClientY(e.clientY - 80)
-
+    SaveCanvas()
+  }
+  const SaveCanvas = () => {
+    if (!canvas) return
     dispatch(saveCanvas(canvas.toDataURL()))
   }
   const handleMouseUp = (e: MouseEvent) => {

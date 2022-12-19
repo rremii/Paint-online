@@ -3,35 +3,36 @@ import styled from "styled-components"
 import useResize from "../../hooks/useResize"
 import useStartDrawing from "../../hooks/useStartDrawing"
 import { useAppDispatch, useTypedSelector } from "../../store/ReduxStore"
-import { setCanvas, setContext } from "../../store/contextSlice"
+import { setCanvas } from "../../store/contextSlice"
 import useBrush from "../../hooks/useBrush"
 import useRect from "../../hooks/useRect"
+import useCircle from "../../hooks/useCircle"
+import useLine from "../../hooks/useLine"
 
 const Canvas: FC = () => {
   const dispatch = useAppDispatch()
 
   const { drawType } = useTypedSelector((state) => state.Context)
 
-  const { width, height } = useResize()
-
   const canvasRef = useRef<null | HTMLCanvasElement>(null)
+  const { width, height } = useResize()
+  const { isDrawing, startX, startY } = useStartDrawing()
 
-  useEffect(() => {
-    const ctx = canvasRef.current?.getContext("2d")
-    if (ctx && canvasRef.current) {
-      dispatch(setCanvas(canvasRef.current))
-      dispatch(setContext(ctx))
-    }
-  }, [])
-
-  const { isDrawing, startX, startY } = useStartDrawing(canvasRef.current)
   const [DrawBrush] = useBrush()
   const [DrawRect] = useRect()
+  const [DrawCircle] = useCircle()
+  const [DrawLine] = useLine()
+
+  useEffect(() => {
+    if (canvasRef.current) dispatch(setCanvas(canvasRef.current))
+  }, [])
 
   const Draw = (e: MouseEvent) => {
     if (!isDrawing) return
     if (drawType === "brush") DrawBrush(e)
     if (drawType === "rect") DrawRect(e, startX, startY)
+    if (drawType === "circle") DrawCircle(e, startX, startY)
+    if (drawType === "line") DrawLine(e, startX, startY)
   }
 
   return (

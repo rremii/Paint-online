@@ -14,11 +14,13 @@
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "node",
-    "appDir": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true
+  },
+  "experimental": {
+    "appDir": true
   },
   "include": [
     "next-env.d.ts",
