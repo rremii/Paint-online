@@ -4,9 +4,7 @@ import { saveCanvas } from "../store/contextSlice"
 
 const useStartDrawing = () => {
   const dispatch = useAppDispatch()
-
   const { ctx } = useTypedSelector((state) => state.Context)
-  const { canvas } = useTypedSelector((state) => state.Context)
 
   const [isDrawing, setIsDrawing] = useState(false)
   const [clientX, setClientX] = useState(0)
@@ -19,11 +17,7 @@ const useStartDrawing = () => {
     setClientX(X)
     setClientY(Y)
     setIsDrawing(true)
-    SaveCanvas()
-  }
-  const SaveCanvas = () => {
-    if (!canvas) return
-    dispatch(saveCanvas(canvas.toDataURL()))
+    dispatch(saveCanvas())
   }
   const handleMouseUp = (e: MouseEvent) => {
     setIsDrawing(false)
@@ -42,7 +36,7 @@ const useStartDrawing = () => {
       removeEventListener("mousedown", handleMouseDown)
       removeEventListener("mouseup", handleMouseUp)
     }
-  })
+  }, [])
 
   return {
     isDrawing,

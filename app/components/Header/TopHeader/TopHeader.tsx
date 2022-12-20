@@ -1,15 +1,24 @@
-import { FC } from "react"
+import { ChangeEvent, FC, useEffect, useState } from "react"
 import styled from "styled-components"
 import Image from "next/image"
 import { useAppDispatch } from "../../../store/ReduxStore"
-import { drawType, setType } from "../../../store/contextSlice"
+import { drawType, setColor, setType } from "../../../store/contextSlice"
 
 const TopHeader: FC = () => {
   const dispatch = useAppDispatch()
 
+  const [inputColor, setInputColor] = useState("black")
+
   const SetType = (type: drawType) => {
     dispatch(setType(type))
   }
+  const SetColor = (e: ChangeEvent<HTMLInputElement>) => {
+    setInputColor(e.currentTarget.value)
+  }
+
+  useEffect(() => {
+    dispatch(setColor(inputColor))
+  }, [inputColor])
 
   return (
     <TopHeaderWrapper className="topHeader__wrapper">
@@ -23,14 +32,14 @@ const TopHeader: FC = () => {
         <div onClick={() => SetType("circle")} className="circle">
           <Image width={25} height={25} src="/circle.svg" alt="circle" />
         </div>
-        <div className="eraser">
+        <div onClick={() => SetType("eraser")} className="eraser">
           <Image width={25} height={25} src="/eraser.svg" alt="eraser" />
         </div>
         <div onClick={() => SetType("line")} className="line">
           <Image width={25} height={25} src="/line.svg" alt="line" />
         </div>
         <div className="pickColor">
-          <Image width={25} height={25} src="/pick-color.svg" alt="pickColor" />
+          <input value={inputColor} onChange={SetColor} type="color" />
         </div>
       </div>
       <div className="helpers">

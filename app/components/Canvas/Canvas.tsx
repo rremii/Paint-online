@@ -25,7 +25,7 @@ const Canvas: FC = () => {
 
   useEffect(() => {
     if (canvasRef.current) dispatch(setCanvas(canvasRef.current))
-  }, [])
+  }, [canvasRef])
 
   const Draw = (e: MouseEvent) => {
     if (!isDrawing) return
@@ -33,6 +33,7 @@ const Canvas: FC = () => {
     if (drawType === "rect") DrawRect(e, startX, startY)
     if (drawType === "circle") DrawCircle(e, startX, startY)
     if (drawType === "line") DrawLine(e, startX, startY)
+    if (drawType === "eraser") DrawBrush(e)
   }
 
   return (
