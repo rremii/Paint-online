@@ -13,5 +13,6 @@ const Header: FC = () => {
 }
 export default Header
 const HeaderWrapper = styled.header`
+  z-index: 1;
   width: 100%;
 `

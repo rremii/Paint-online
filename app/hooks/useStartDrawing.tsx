@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useAppDispatch, useTypedSelector } from "../store/ReduxStore"
-import { saveCanvas } from "../store/contextSlice"
+import { addToUndo, saveCanvas } from "../store/contextSlice"
+import canvas from "../components/Canvas/Canvas"
 
 const useStartDrawing = () => {
   const dispatch = useAppDispatch()
@@ -18,6 +19,7 @@ const useStartDrawing = () => {
     setClientY(Y)
     setIsDrawing(true)
     dispatch(saveCanvas())
+    dispatch(addToUndo())
   }
   const handleMouseUp = (e: MouseEvent) => {
     setIsDrawing(false)
@@ -29,9 +31,12 @@ const useStartDrawing = () => {
     }
   }, [isDrawing])
   useEffect(() => {
-    window.addEventListener("mousedown", handleMouseDown)
-    window.addEventListener("mouseup", handleMouseUp)
+    const canvas = document.querySelector("canvas")
 
+    if (canvas) {
+      canvas.addEventListener("mousedown", handleMouseDown)
+      canvas.addEventListener("mouseup", handleMouseUp)
+    }
     return () => {
       removeEventListener("mousedown", handleMouseDown)
       removeEventListener("mouseup", handleMouseUp)

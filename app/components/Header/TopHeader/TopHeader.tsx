@@ -3,11 +3,15 @@ import styled from "styled-components"
 import Image from "next/image"
 import { useAppDispatch } from "../../../store/ReduxStore"
 import { drawType, setColor, setType } from "../../../store/contextSlice"
+import useUndo from "../../../hooks/useUndo"
+import useRedo from "../../../hooks/useRedo"
 
 const TopHeader: FC = () => {
   const dispatch = useAppDispatch()
 
   const [inputColor, setInputColor] = useState("black")
+  const [Undo] = useUndo()
+  const [Redo] = useRedo()
 
   const SetType = (type: drawType) => {
     dispatch(setType(type))
@@ -43,10 +47,10 @@ const TopHeader: FC = () => {
         </div>
       </div>
       <div className="helpers">
-        <div className="undo">
+        <div onClick={Undo} className="undo">
           <Image width={25} height={25} src="/undo.svg" alt="undo" />
         </div>
-        <div className="redo">
+        <div onClick={Redo} className="redo">
           <Image width={25} height={25} src="/redo.svg" alt="redo" />
         </div>
         <div className="save">

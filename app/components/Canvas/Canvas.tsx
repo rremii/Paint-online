@@ -8,6 +8,7 @@ import useBrush from "../../hooks/useBrush"
 import useRect from "../../hooks/useRect"
 import useCircle from "../../hooks/useCircle"
 import useLine from "../../hooks/useLine"
+import useUndo from "../../hooks/useUndo"
 
 const Canvas: FC = () => {
   const dispatch = useAppDispatch()
