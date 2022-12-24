@@ -1,13 +1,16 @@
 import { ChangeEvent, FC, useEffect, useState } from "react"
 import styled from "styled-components"
 import Image from "next/image"
-import { useAppDispatch } from "../../../store/ReduxStore"
+import { useAppDispatch, useTypedSelector } from "../../../store/ReduxStore"
 import { drawType, setColor, setType } from "../../../store/contextSlice"
 import useUndo from "../../../hooks/useUndo"
 import useRedo from "../../../hooks/useRedo"
+import { v4 as uuidv4 } from "uuid"
 
 const TopHeader: FC = () => {
   const dispatch = useAppDispatch()
+
+  const { canvas } = useTypedSelector((state) => state.Context)
 
   const [inputColor, setInputColor] = useState("black")
   const [Undo] = useUndo()
@@ -18,6 +21,18 @@ const TopHeader: FC = () => {
   }
   const SetColor = (e: ChangeEvent<HTMLInputElement>) => {
     setInputColor(e.currentTarget.value)
+  }
+
+  const Download = () => {
+    if (!canvas) return
+    const dataUrl = canvas.toDataURL()
+    const a = document.createElement("a")
+    a.href = dataUrl
+    const name = uuidv4().slice(0, 10)
+    a.download = name + ".jpg"
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
   }
 
   useEffect(() => {
@@ -53,7 +68,7 @@ const TopHeader: FC = () => {
         <div onClick={Redo} className="redo">
           <Image width={25} height={25} src="/redo.svg" alt="redo" />
         </div>
-        <div className="save">
+        <div onClick={Download} className="save">
           <Image width={25} height={25} src="/save.svg" alt="save" />
         </div>
       </div>

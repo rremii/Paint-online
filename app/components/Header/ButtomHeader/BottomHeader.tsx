@@ -29,6 +29,7 @@ const BottomHeader: FC = () => {
       <input
         value={lineInputWidth}
         onChange={SetLineWidth}
+        step={5}
         min={3}
         max={99}
         type="number"
