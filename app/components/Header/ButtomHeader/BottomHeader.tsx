@@ -15,14 +15,13 @@ const BottomHeader: FC = () => {
 
   const [lineInputWidth, setLineInputWidth] = useState(5)
 
-  const SetLineWidth = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e && e.currentTarget) setLineInputWidth(+e.currentTarget.value)
-  }
-
   useEffect(() => {
     dispatch(setLineWidth(lineInputWidth))
   }, [lineInputWidth])
 
+  const SetLineWidth = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e && e.currentTarget) setLineInputWidth(+e.currentTarget.value)
+  }
   return (
     <BottomHeaderWrapper className="bottomHeader__wrapper">
       <h2>Толщина линии</h2>
