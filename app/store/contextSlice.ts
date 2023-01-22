@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { WritableDraft } from "immer/dist/types/types-external"
+import { number } from "prop-types"
 
 export type drawType = "brush" | "rect" | "circle" | "line" | "eraser"
 
@@ -12,17 +13,23 @@ interface initialStateType {
   color: string
   undoList: string[]
   redoList: string[]
+  userName: string
+  sessionId: number | null
+  socket: WebSocket | null
 }
 
 const initialState = {
   ctx: null,
   canvas: null,
-  drawType: "rect",
+  drawType: "brush",
   savedCanvas: null,
   lineWidth: 1,
   color: "black",
   undoList: [],
   redoList: [],
+  userName: "",
+  sessionId: null,
+  socket: null,
 } as initialStateType
 
 const ContextSlice = createSlice({
@@ -69,6 +76,15 @@ const ContextSlice = createSlice({
       const savedCanvas = state.savedCanvas
       if (savedCanvas) state.undoList.push(savedCanvas)
     },
+    setUserName(state, action: PayloadAction<string>) {
+      state.userName = action.payload
+    },
+    setSessionId(state, action: PayloadAction<number>) {
+      state.sessionId = action.payload
+    },
+    setSocket(state, action: PayloadAction<WebSocket>) {
+      state.socket = action.payload
+    },
   },
 })
 export const {
@@ -81,5 +97,8 @@ export const {
   setColor,
   setLineWidth,
   saveCanvas,
+  setUserName,
+  setSessionId,
+  setSocket,
 } = ContextSlice.actions
 export default ContextSlice.reducer

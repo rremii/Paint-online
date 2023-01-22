@@ -2,10 +2,12 @@ import { FC } from "react"
 import styled from "styled-components"
 import Header from "../components/Header/Header"
 import Canvas from "../components/Canvas/Canvas"
+import PopUp from "../components/PopUp/PopUp"
 
 const HomePage: FC = () => {
   return (
     <HomeWrapper className="home__wrapper">
+      <PopUp />
       <Header />
       <Canvas />
     </HomeWrapper>

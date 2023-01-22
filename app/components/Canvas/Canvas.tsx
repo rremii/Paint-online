@@ -9,15 +9,19 @@ import useRect from "../../hooks/useRect"
 import useCircle from "../../hooks/useCircle"
 import useLine from "../../hooks/useLine"
 import useUndo from "../../hooks/useUndo"
+import useConnect from "../../hooks/useConnect"
 
 const Canvas: FC = () => {
   const dispatch = useAppDispatch()
 
-  const { drawType } = useTypedSelector((state) => state.Context)
+  const { drawType, sessionId, socket } = useTypedSelector(
+    (state) => state.Context
+  )
 
   const canvasRef = useRef<null | HTMLCanvasElement>(null)
   const { width, height } = useResize()
   const { isDrawing, startX, startY } = useStartDrawing()
+  useConnect()
 
   const [DrawBrush] = useBrush()
   const [DrawRect] = useRect()
@@ -30,11 +34,6 @@ const Canvas: FC = () => {
 
   const Draw = (e: MouseEvent) => {
     if (!isDrawing) return
-    if (drawType === "brush") DrawBrush(e)
-    if (drawType === "rect") DrawRect(e, startX, startY)
-    if (drawType === "circle") DrawCircle(e, startX, startY)
-    if (drawType === "line") DrawLine(e, startX, startY)
-    if (drawType === "eraser") DrawBrush(e)
   }
 
   return (

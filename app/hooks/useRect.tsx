@@ -15,11 +15,8 @@ const useRect = () => {
     ctx.strokeStyle = color
   }
 
-  const Draw = (e: MouseEvent, startX: number, startY: number) => {
+  const Draw = (startX: number, startY: number, X: number, Y: number) => {
     if (!ctx || !canvas) return
-    const offsetLeft = (window.innerWidth - 1280) / 2
-    const X = window.innerWidth >= 1280 ? e.clientX - offsetLeft : e.clientX
-    const Y = e.clientY - 80
 
     const width = startX - X
     const height = startY - Y

@@ -1,11 +1,15 @@
 import styled from "styled-components"
 import HomePage from "../app/views/Home"
+import { useRouter } from "next/router"
+import { useEffect } from "react"
 
 export default function Home() {
-    return (
-        <Wrapper className="MainWrapper">
-            <HomePage />
-        </Wrapper>
-    )
+  const router = useRouter()
+
+  useEffect(() => {
+    router.push((+new Date()).toString(16))
+  }, [])
+
+  return <></>
 }
 const Wrapper = styled.div``
