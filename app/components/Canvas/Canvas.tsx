@@ -4,36 +4,44 @@ import useResize from "../../hooks/useResize"
 import useStartDrawing from "../../hooks/useStartDrawing"
 import { useAppDispatch, useTypedSelector } from "../../store/ReduxStore"
 import { setCanvas } from "../../store/contextSlice"
-import useBrush from "../../hooks/useBrush"
-import useRect from "../../hooks/useRect"
-import useCircle from "../../hooks/useCircle"
-import useLine from "../../hooks/useLine"
-import useUndo from "../../hooks/useUndo"
 import useConnect from "../../hooks/useConnect"
 
 const Canvas: FC = () => {
   const dispatch = useAppDispatch()
 
-  const { drawType, sessionId, socket } = useTypedSelector(
+  const { drawType, isDrawing, sessionId, socket } = useTypedSelector(
     (state) => state.Context
   )
 
   const canvasRef = useRef<null | HTMLCanvasElement>(null)
   const { width, height } = useResize()
-  const { isDrawing, startX, startY } = useStartDrawing()
+  const { startX, startY } = useStartDrawing()
   useConnect()
-
-  const [DrawBrush] = useBrush()
-  const [DrawRect] = useRect()
-  const [DrawCircle] = useCircle()
-  const [DrawLine] = useLine()
 
   useEffect(() => {
     if (canvasRef.current) dispatch(setCanvas(canvasRef.current))
   }, [canvasRef])
 
   const Draw = (e: MouseEvent) => {
-    if (!isDrawing) return
+    if (!isDrawing || !socket) return
+
+    const offsetLeft = (window.innerWidth - 1280) / 2
+    const X = window.innerWidth >= 1280 ? e.clientX - offsetLeft : e.clientX
+    const Y = e.clientY - 80
+
+    socket.send(
+      JSON.stringify({
+        method: "draw",
+        sessionId,
+        figure: {
+          drawType,
+          startX,
+          startY,
+          X,
+          Y,
+        },
+      })
+    )
   }
 
   return (

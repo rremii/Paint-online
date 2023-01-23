@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react"
 import { useAppDispatch, useTypedSelector } from "../store/ReduxStore"
-import { addToUndo, saveCanvas } from "../store/contextSlice"
+import { addToUndo, saveCanvas, setIsDrawing } from "../store/contextSlice"
 import canvas from "../components/Canvas/Canvas"
 
 const useStartDrawing = () => {
   const dispatch = useAppDispatch()
   const { ctx } = useTypedSelector((state) => state.Context)
+  const { socket } = useTypedSelector((state) => state.Context)
+  const { sessionId } = useTypedSelector((state) => state.Context)
+  const { isDrawing } = useTypedSelector((state) => state.Context)
 
-  const [isDrawing, setIsDrawing] = useState(false)
   const [clientX, setClientX] = useState(0)
   const [clientY, setClientY] = useState(0)
 
@@ -17,12 +19,18 @@ const useStartDrawing = () => {
     const Y = e.clientY - 80
     setClientX(X)
     setClientY(Y)
-    setIsDrawing(true)
     dispatch(saveCanvas())
+    dispatch(setIsDrawing(true))
     dispatch(addToUndo())
   }
   const handleMouseUp = (e: MouseEvent) => {
-    setIsDrawing(false)
+    if (!socket) return
+    socket.send(
+      JSON.stringify({
+        method: "finish",
+        sessionId,
+      })
+    )
   }
   useEffect(() => {
     if (isDrawing && ctx) {
@@ -41,10 +49,9 @@ const useStartDrawing = () => {
       removeEventListener("mousedown", handleMouseDown)
       removeEventListener("mouseup", handleMouseUp)
     }
-  }, [])
+  }, [canvas, socket])
 
   return {
-    isDrawing,
     startX: clientX,
     startY: clientY,
   }

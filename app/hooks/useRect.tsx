@@ -1,5 +1,5 @@
-import { useAppDispatch, useTypedSelector } from "../store/ReduxStore"
-import { MouseEvent } from "react"
+import { useTypedSelector } from "../store/ReduxStore"
+import { useEffect } from "react"
 
 const useRect = () => {
   const { ctx } = useTypedSelector((state) => state.Context)
@@ -16,13 +16,13 @@ const useRect = () => {
   }
 
   const Draw = (startX: number, startY: number, X: number, Y: number) => {
-    if (!ctx || !canvas) return
-
+    if (!ctx || !canvas || !savedCanvas) return
     const width = startX - X
     const height = startY - Y
 
     const img = new Image()
-    if (savedCanvas) img.src = savedCanvas
+    img.src = savedCanvas
+
     img.onload = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
@@ -32,6 +32,7 @@ const useRect = () => {
       ctx.stroke()
     }
   }
+
   return [Draw]
 }
 

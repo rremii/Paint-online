@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { WritableDraft } from "immer/dist/types/types-external"
-import { number } from "prop-types"
-
-export type drawType = "brush" | "rect" | "circle" | "line" | "eraser"
+import { drawType } from "./types"
 
 interface initialStateType {
   ctx: CanvasRenderingContext2D | null
@@ -14,14 +12,15 @@ interface initialStateType {
   undoList: string[]
   redoList: string[]
   userName: string
-  sessionId: number | null
+  sessionId: string | null
   socket: WebSocket | null
+  isDrawing: boolean
 }
 
 const initialState = {
   ctx: null,
   canvas: null,
-  drawType: "brush",
+  drawType: "rect",
   savedCanvas: null,
   lineWidth: 1,
   color: "black",
@@ -30,6 +29,7 @@ const initialState = {
   userName: "",
   sessionId: null,
   socket: null,
+  isDrawing: false,
 } as initialStateType
 
 const ContextSlice = createSlice({
@@ -79,11 +79,14 @@ const ContextSlice = createSlice({
     setUserName(state, action: PayloadAction<string>) {
       state.userName = action.payload
     },
-    setSessionId(state, action: PayloadAction<number>) {
+    setSessionId(state, action: PayloadAction<string>) {
       state.sessionId = action.payload
     },
     setSocket(state, action: PayloadAction<WebSocket>) {
       state.socket = action.payload
+    },
+    setIsDrawing(state, action: PayloadAction<boolean>) {
+      state.isDrawing = action.payload
     },
   },
 })
@@ -100,5 +103,6 @@ export const {
   setUserName,
   setSessionId,
   setSocket,
+  setIsDrawing,
 } = ContextSlice.actions
 export default ContextSlice.reducer

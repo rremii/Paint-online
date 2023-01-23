@@ -1,11 +1,11 @@
-import {useTypedSelector} from "../store/ReduxStore"
-import {MouseEvent} from "react"
+import { useTypedSelector } from "../store/ReduxStore"
+import { MouseEvent } from "react"
 
 const useBrush = () => {
-  const {ctx} = useTypedSelector((state) => state.Context)
-  const {drawType} = useTypedSelector((state) => state.Context)
-  const {lineWidth} = useTypedSelector((state) => state.Context)
-  const {color} = useTypedSelector((state) => state.Context)
+  const { ctx } = useTypedSelector((state) => state.Context)
+  const { drawType } = useTypedSelector((state) => state.Context)
+  const { lineWidth } = useTypedSelector((state) => state.Context)
+  const { color } = useTypedSelector((state) => state.Context)
 
   const SetStyles = () => {
     if (!ctx) return
@@ -16,7 +16,6 @@ const useBrush = () => {
 
   const Draw = (X: number, Y: number) => {
     if (!ctx) return
-
 
     SetStyles()
     ctx.lineTo(X, Y)
