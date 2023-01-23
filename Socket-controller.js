@@ -11,6 +11,9 @@ class SocketController {
             case "draw":
                 SocketServer.broadcastConnection(ws, msg,aWss)
                 break
+            case "finish":
+                SocketServer.broadcastConnection(ws, msg,aWss)
+                break
         }
     }
 
