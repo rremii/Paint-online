@@ -1,10 +1,16 @@
 export type drawType = "brush" | "rect" | "circle" | "line" | "eraser"
 
-interface figure {
+export interface styles {
+  color: string
+  lineWidth: number
+}
+
+export interface figure {
   X: number
   Y: number
   startX: number
   startY: number
+  styles: styles
   drawType: drawType
 }
 

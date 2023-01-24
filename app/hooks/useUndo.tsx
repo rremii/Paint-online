@@ -4,9 +4,8 @@ import { removeLastUndo } from "../store/contextSlice"
 const useUndo = () => {
   const dispatch = useAppDispatch()
 
-  const { undoList, redoList, savedCanvas, ctx, canvas } = useTypedSelector(
-    (state) => state.Context
-  )
+  const { undoList, savedCanvas, ctx, canvas, socket, sessionId } =
+    useTypedSelector((state) => state.Context)
 
   const Undo = () => {
     if (!canvas || !ctx || !savedCanvas) return
@@ -19,6 +18,14 @@ const useUndo = () => {
       img.onload = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+        if (socket && sessionId && canvas)
+          socket.send(
+            JSON.stringify({
+              method: "share",
+              sessionId,
+              img: canvas.toDataURL(),
+            })
+          )
       }
     } else {
       ctx.clearRect(0, 0, canvas.width, canvas.height)

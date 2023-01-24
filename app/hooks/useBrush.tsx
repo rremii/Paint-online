@@ -1,23 +1,29 @@
 import { useTypedSelector } from "../store/ReduxStore"
 import { MouseEvent } from "react"
+import { figure, styles } from "../store/types"
 
 const useBrush = () => {
   const { ctx } = useTypedSelector((state) => state.Context)
   const { drawType } = useTypedSelector((state) => state.Context)
-  const { lineWidth } = useTypedSelector((state) => state.Context)
-  const { color } = useTypedSelector((state) => state.Context)
+  // const { lineWidth } = useTypedSelector((state) => state.Context)
+  // const { color } = useTypedSelector((state) => state.Context)
 
-  const SetStyles = () => {
+  const SetStyles = ({ lineWidth, color }: styles, isEraser: boolean) => {
     if (!ctx) return
     ctx.lineJoin = "round"
     ctx.lineWidth = lineWidth
-    ctx.strokeStyle = drawType === "eraser" ? "white" : color
+    ctx.strokeStyle = isEraser ? "white" : color
   }
 
-  const Draw = (X: number, Y: number) => {
+  const Draw = (
+    X: number,
+    Y: number,
+    styles: styles,
+    isEraser: boolean = false
+  ) => {
     if (!ctx) return
 
-    SetStyles()
+    SetStyles(styles, isEraser)
     ctx.lineTo(X, Y)
     ctx.stroke()
   }

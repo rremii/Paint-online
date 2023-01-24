@@ -1,30 +1,34 @@
-import {useAppDispatch, useTypedSelector} from "../store/ReduxStore"
-import {MouseEvent} from "react"
+import { useAppDispatch, useTypedSelector } from "../store/ReduxStore"
+import { MouseEvent } from "react"
+import { styles } from "../store/types"
 
 const useLine = () => {
-  const {ctx} = useTypedSelector((state) => state.Context)
-  const {savedCanvas} = useTypedSelector((state) => state.Context)
-  const {canvas} = useTypedSelector((state) => state.Context)
-  const {lineWidth} = useTypedSelector((state) => state.Context)
-  const {color} = useTypedSelector((state) => state.Context)
+  const { ctx } = useTypedSelector((state) => state.Context)
+  const { savedCanvas } = useTypedSelector((state) => state.Context)
+  const { canvas } = useTypedSelector((state) => state.Context)
 
-  const SetStyles = () => {
+  const SetStyles = ({ lineWidth, color }: styles) => {
     if (!ctx) return
     ctx.lineJoin = "round"
     ctx.lineWidth = lineWidth
     ctx.strokeStyle = color
   }
 
-  const Draw = (startX: number, startY: number, X: number, Y: number) => {
+  const Draw = (
+    startX: number,
+    startY: number,
+    X: number,
+    Y: number,
+    styles: styles
+  ) => {
     if (!ctx || !canvas) return
-
 
     const img = new Image()
     if (savedCanvas) img.src = savedCanvas
     img.onload = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
-      SetStyles()
+      SetStyles(styles)
       ctx.beginPath()
       ctx.moveTo(startX, startY)
       ctx.lineTo(X, Y)

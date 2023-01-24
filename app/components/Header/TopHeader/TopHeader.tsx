@@ -1,26 +1,27 @@
-import {ChangeEvent, FC, useEffect, useState} from "react"
+import { ChangeEvent, FC, useEffect, useState } from "react"
 import styled from "styled-components"
 import Image from "next/image"
-import {useAppDispatch, useTypedSelector} from "../../../store/ReduxStore"
-import {drawType, setColor, setType} from "../../../store/contextSlice"
+import { useAppDispatch, useTypedSelector } from "../../../store/ReduxStore"
+import { setColor, setType } from "../../../store/contextSlice"
 import useUndo from "../../../hooks/useUndo"
 import useRedo from "../../../hooks/useRedo"
-import {v4 as uuidv4} from "uuid"
+import { v4 as uuidv4 } from "uuid"
+import { drawType } from "../../../store/types"
 
 const TopHeader: FC = () => {
   const dispatch = useAppDispatch()
 
-  const {canvas} = useTypedSelector((state) => state.Context)
+  const { canvas, socket, sessionId } = useTypedSelector(
+    (state) => state.Context
+  )
 
   const [inputColor, setInputColor] = useState("black")
   const [Undo] = useUndo()
   const [Redo] = useRedo()
 
-
   useEffect(() => {
     dispatch(setColor(inputColor))
   }, [inputColor])
-
 
   const SetType = (type: drawType) => {
     dispatch(setType(type))
@@ -41,41 +42,60 @@ const TopHeader: FC = () => {
     document.body.removeChild(a)
   }
 
+  const ShareCanvas = () => {
+    // if (socket && sessionId && canvas)
+    //   socket.send(
+    //     JSON.stringify({
+    //       method: "share",
+    //       sessionId,
+    //       img: canvas.toDataURL(),
+    //     })
+    //   )
+  }
+
+  const handleRedo = () => {
+    Redo()
+    ShareCanvas()
+  }
+  const handleUndo = () => {
+    Undo()
+    ShareCanvas()
+  }
 
   return (
-      <TopHeaderWrapper className="topHeader__wrapper">
-        <div className="drawingTools">
-          <div onClick={() => SetType("brush")} className="brush">
-            <Image width={25} height={25} src="/brush.svg" alt="brush"/>
-          </div>
-          <div onClick={() => SetType("rect")} className="rect">
-            <Image width={25} height={25} src="/rect.svg" alt="brush"/>
-          </div>
-          <div onClick={() => SetType("circle")} className="circle">
-            <Image width={25} height={25} src="/circle.svg" alt="circle"/>
-          </div>
-          <div onClick={() => SetType("eraser")} className="eraser">
-            <Image width={25} height={25} src="/eraser.svg" alt="eraser"/>
-          </div>
-          <div onClick={() => SetType("line")} className="line">
-            <Image width={25} height={25} src="/line.svg" alt="line"/>
-          </div>
-          <div className="pickColor">
-            <input value={inputColor} onChange={SetColor} type="color"/>
-          </div>
+    <TopHeaderWrapper className="topHeader__wrapper">
+      <div className="drawingTools">
+        <div onClick={() => SetType("brush")} className="brush">
+          <Image width={25} height={25} src="/brush.svg" alt="brush" />
         </div>
-        <div className="helpers">
-          <div onClick={Undo} className="undo">
-            <Image width={25} height={25} src="/undo.svg" alt="undo"/>
-          </div>
-          <div onClick={Redo} className="redo">
-            <Image width={25} height={25} src="/redo.svg" alt="redo"/>
-          </div>
-          <div onClick={Download} className="save">
-            <Image width={25} height={25} src="/save.svg" alt="save"/>
-          </div>
+        <div onClick={() => SetType("rect")} className="rect">
+          <Image width={25} height={25} src="/rect.svg" alt="brush" />
         </div>
-      </TopHeaderWrapper>
+        <div onClick={() => SetType("circle")} className="circle">
+          <Image width={25} height={25} src="/circle.svg" alt="circle" />
+        </div>
+        <div onClick={() => SetType("eraser")} className="eraser">
+          <Image width={25} height={25} src="/eraser.svg" alt="eraser" />
+        </div>
+        <div onClick={() => SetType("line")} className="line">
+          <Image width={25} height={25} src="/line.svg" alt="line" />
+        </div>
+        <div className="pickColor">
+          <input value={inputColor} onChange={SetColor} type="color" />
+        </div>
+      </div>
+      <div className="helpers">
+        <div onClick={handleUndo} className="undo">
+          <Image width={25} height={25} src="/undo.svg" alt="undo" />
+        </div>
+        <div onClick={handleRedo} className="redo">
+          <Image width={25} height={25} src="/redo.svg" alt="redo" />
+        </div>
+        <div onClick={Download} className="save">
+          <Image width={25} height={25} src="/save.svg" alt="save" />
+        </div>
+      </div>
+    </TopHeaderWrapper>
   )
 }
 export default TopHeader

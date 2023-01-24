@@ -1,22 +1,27 @@
-import {useTypedSelector} from "../store/ReduxStore"
-import {MouseEvent} from "react"
+import { useTypedSelector } from "../store/ReduxStore"
+import { MouseEvent } from "react"
+import { styles } from "../store/types"
 
 const useCircle = () => {
-  const {ctx} = useTypedSelector((state) => state.Context)
-  const {savedCanvas} = useTypedSelector((state) => state.Context)
-  const {canvas} = useTypedSelector((state) => state.Context)
-  const {color} = useTypedSelector((state) => state.Context)
+  const { ctx } = useTypedSelector((state) => state.Context)
+  const { savedCanvas } = useTypedSelector((state) => state.Context)
+  const { canvas } = useTypedSelector((state) => state.Context)
 
-  const SetStyles = () => {
+  const SetStyles = ({ color }: styles) => {
     if (!ctx) return
     ctx.lineWidth = 1
     ctx.fillStyle = color
     ctx.fill()
     ctx.strokeStyle = "transparent"
   }
-  const Draw = (startX: number, startY: number, X: number, Y: number) => {
+  const Draw = (
+    startX: number,
+    startY: number,
+    X: number,
+    Y: number,
+    styles: styles
+  ) => {
     if (!ctx || !canvas) return
-
 
     const width = startX - X
     const height = startY - Y
@@ -28,7 +33,7 @@ const useCircle = () => {
     img.onload = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
-      SetStyles()
+      SetStyles(styles)
       ctx.beginPath()
       ctx.arc(startX, startY, radius, 0, 2 * Math.PI, false)
       ctx.stroke()
