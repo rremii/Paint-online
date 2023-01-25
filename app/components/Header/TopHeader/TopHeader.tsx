@@ -2,18 +2,17 @@ import { ChangeEvent, FC, useEffect, useState } from "react"
 import styled from "styled-components"
 import Image from "next/image"
 import { useAppDispatch, useTypedSelector } from "../../../store/ReduxStore"
-import { setColor, setType } from "../../../store/contextSlice"
 import useUndo from "../../../hooks/useUndo"
 import useRedo from "../../../hooks/useRedo"
 import { v4 as uuidv4 } from "uuid"
 import { drawType } from "../../../store/types"
+import { setColor } from "../../../store/StylesSlice"
+import { setType } from "../../../store/SocketSlice"
 
 const TopHeader: FC = () => {
   const dispatch = useAppDispatch()
 
-  const { canvas, socket, sessionId } = useTypedSelector(
-    (state) => state.Context
-  )
+  const { canvas } = useTypedSelector((state) => state.Context)
 
   const [inputColor, setInputColor] = useState("black")
   const [Undo] = useUndo()
@@ -42,24 +41,11 @@ const TopHeader: FC = () => {
     document.body.removeChild(a)
   }
 
-  const ShareCanvas = () => {
-    // if (socket && sessionId && canvas)
-    //   socket.send(
-    //     JSON.stringify({
-    //       method: "share",
-    //       sessionId,
-    //       img: canvas.toDataURL(),
-    //     })
-    //   )
-  }
-
   const handleRedo = () => {
     Redo()
-    ShareCanvas()
   }
   const handleUndo = () => {
     Undo()
-    ShareCanvas()
   }
 
   return (

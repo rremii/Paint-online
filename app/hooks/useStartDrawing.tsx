@@ -1,16 +1,14 @@
-import {useEffect, useState} from "react"
-import {useAppDispatch, useTypedSelector} from "../store/ReduxStore"
-import {addToUndo, saveCanvas, setIsDrawing} from "../store/contextSlice"
-import canvas from "../components/Canvas/Canvas"
-import axios from "axios"
+import { useEffect, useState } from "react"
+import { useAppDispatch, useTypedSelector } from "../store/ReduxStore"
+import { addToUndo, saveCanvas } from "../store/contextSlice"
+import { SocketApi } from "../api/config/Api"
+import { setIsDrawing } from "../store/SocketSlice"
 
 const useStartDrawing = () => {
   const dispatch = useAppDispatch()
-  const {canvas} = useTypedSelector((state) => state.Context)
-  const {socket} = useTypedSelector((state) => state.Context)
-  const {sessionId} = useTypedSelector((state) => state.Context)
-  const {isDrawing} = useTypedSelector((state) => state.Context)
-
+  const { socket } = useTypedSelector((state) => state.Socket)
+  const { sessionId } = useTypedSelector((state) => state.Socket)
+  const { canvas } = useTypedSelector((state) => state.Context)
   const [clientX, setClientX] = useState(0)
   const [clientY, setClientY] = useState(0)
 
@@ -24,14 +22,9 @@ const useStartDrawing = () => {
     dispatch(setIsDrawing(true))
     dispatch(addToUndo())
   }
-  const handleMouseUp = (e: MouseEvent) => {
-    if (!socket) return
-    socket.send(
-        JSON.stringify({
-          method: "finish",
-          sessionId,
-        })
-    )
+  const handleMouseUp = () => {
+    if (!socket || !sessionId) return
+    SocketApi.Finish(socket, sessionId)
   }
 
   useEffect(() => {

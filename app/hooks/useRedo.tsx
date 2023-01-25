@@ -1,11 +1,16 @@
 import { useAppDispatch, useTypedSelector } from "../store/ReduxStore"
-import { removeLastRedo, removeLastUndo } from "../store/contextSlice"
+import { removeLastRedo } from "../store/contextSlice"
+import { SocketApi } from "../api/config/Api"
 
 const useRedo = () => {
   const dispatch = useAppDispatch()
 
-  const { redoList, savedCanvas, ctx, canvas, socket, sessionId } =
-    useTypedSelector((state) => state.Context)
+  const { socket } = useTypedSelector((state) => state.Socket)
+  const { sessionId } = useTypedSelector((state) => state.Socket)
+  const { savedCanvas } = useTypedSelector((state) => state.Context)
+  const { ctx } = useTypedSelector((state) => state.Context)
+  const { canvas } = useTypedSelector((state) => state.Context)
+  const { redoList } = useTypedSelector((state) => state.Context)
 
   const Redo = () => {
     if (!canvas || !ctx || !savedCanvas) return
@@ -19,13 +24,7 @@ const useRedo = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
         if (socket && sessionId && canvas)
-          socket.send(
-            JSON.stringify({
-              method: "share",
-              sessionId,
-              img: canvas.toDataURL(),
-            })
-          )
+          SocketApi.Share(socket, sessionId, canvas.toDataURL())
       }
     }
   }

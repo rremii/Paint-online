@@ -1,10 +1,9 @@
 import { useTypedSelector } from "../store/ReduxStore"
-import { MouseEvent } from "react"
 import { styles } from "../store/types"
 
 const useCircle = () => {
-  const { ctx } = useTypedSelector((state) => state.Context)
   const { savedCanvas } = useTypedSelector((state) => state.Context)
+  const { ctx } = useTypedSelector((state) => state.Context)
   const { canvas } = useTypedSelector((state) => state.Context)
 
   const SetStyles = ({ color }: styles) => {

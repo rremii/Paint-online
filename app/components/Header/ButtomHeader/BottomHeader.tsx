@@ -1,14 +1,7 @@
-import {
-  ChangeEvent,
-  ChangeEventHandler,
-  FC,
-  InputHTMLAttributes,
-  useEffect,
-  useState,
-} from "react"
+import { ChangeEvent, FC, useEffect, useState } from "react"
 import styled from "styled-components"
 import { useAppDispatch } from "../../../store/ReduxStore"
-import { setLineWidth } from "../../../store/contextSlice"
+import { setLineWidth } from "../../../store/StylesSlice"
 
 const BottomHeader: FC = () => {
   const dispatch = useAppDispatch()

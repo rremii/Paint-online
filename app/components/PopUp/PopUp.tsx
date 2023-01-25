@@ -1,9 +1,8 @@
 import { FC, useRef, useState } from "react"
 import styled from "styled-components"
 import { AdaptiveValue } from "../../../styles/functions/mixins"
-import { bool } from "prop-types"
 import { useAppDispatch } from "../../store/ReduxStore"
-import { setUserName } from "../../store/contextSlice"
+import { setUserName } from "../../store/SocketSlice"
 
 const PopUp: FC = () => {
   const dispatch = useAppDispatch()

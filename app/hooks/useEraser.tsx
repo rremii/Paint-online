@@ -1,5 +1,4 @@
-import { useAppDispatch, useTypedSelector } from "../store/ReduxStore"
-import { MouseEvent } from "react"
+import { useTypedSelector } from "../store/ReduxStore"
 
 const useEraser = () => {
   const { ctx } = useTypedSelector((state) => state.Context)

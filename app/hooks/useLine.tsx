@@ -1,10 +1,9 @@
-import { useAppDispatch, useTypedSelector } from "../store/ReduxStore"
-import { MouseEvent } from "react"
+import { useTypedSelector } from "../store/ReduxStore"
 import { styles } from "../store/types"
 
 const useLine = () => {
-  const { ctx } = useTypedSelector((state) => state.Context)
   const { savedCanvas } = useTypedSelector((state) => state.Context)
+  const { ctx } = useTypedSelector((state) => state.Context)
   const { canvas } = useTypedSelector((state) => state.Context)
 
   const SetStyles = ({ lineWidth, color }: styles) => {

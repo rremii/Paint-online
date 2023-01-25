@@ -1,5 +1,4 @@
 import styled from "styled-components"
-import HomePage from "../app/views/Home"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
 

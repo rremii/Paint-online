@@ -1,20 +1,16 @@
-import {
-  combineReducers,
-  configureStore,
-  createSerializableStateInvariantMiddleware,
-  isPlain,
-} from "@reduxjs/toolkit"
+import { combineReducers, configureStore } from "@reduxjs/toolkit"
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux"
 
 import { PreloadedState } from "redux"
 
-import { Api } from "../api/config/Api"
 import ContextSlice from "./contextSlice"
+import StylesSlice from "./StylesSlice"
+import SocketSlice from "./SocketSlice"
 
 const rootReducer = combineReducers({
   Context: ContextSlice,
-
-  [Api.reducerPath]: Api.reducer,
+  Styles: StylesSlice,
+  Socket: SocketSlice,
 })
 export const setupStore = (preloadedState?: PreloadedState<RootState>) => {
   return configureStore({
@@ -24,7 +20,7 @@ export const setupStore = (preloadedState?: PreloadedState<RootState>) => {
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         serializableCheck: false,
-      }).concat(Api.middleware),
+      }),
 
     devTools: true,
   })

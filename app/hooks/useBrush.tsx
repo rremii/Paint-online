@@ -1,12 +1,8 @@
 import { useTypedSelector } from "../store/ReduxStore"
-import { MouseEvent } from "react"
-import { figure, styles } from "../store/types"
+import { styles } from "../store/types"
 
 const useBrush = () => {
   const { ctx } = useTypedSelector((state) => state.Context)
-  const { drawType } = useTypedSelector((state) => state.Context)
-  // const { lineWidth } = useTypedSelector((state) => state.Context)
-  // const { color } = useTypedSelector((state) => state.Context)
 
   const SetStyles = ({ lineWidth, color }: styles, isEraser: boolean) => {
     if (!ctx) return

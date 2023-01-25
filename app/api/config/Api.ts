@@ -1,33 +1,56 @@
-import { BaseQueryFn, createApi } from "@reduxjs/toolkit/query/react"
-import { AxiosRequestConfig } from "axios"
-import { $api, API_URL } from "./index"
+import { $api } from "./index"
+import { figure } from "../../store/types"
 
-const axiosBaseQuery =
-  (
-    { baseUrl }: { baseUrl: string } = { baseUrl: "" }
-  ): BaseQueryFn<
-    {
-      url: string
-      method: AxiosRequestConfig["method"]
-      data?: AxiosRequestConfig["data"]
-      params?: AxiosRequestConfig["params"]
-      isDefault?: boolean //use default axios, instead of custom with interceptors
-    },
-    unknown,
-    unknown
-  > =>
-  async ({ url, method, data, params }) => {
-    const result = await $api({ url: baseUrl + url, method, data, params })
+export const SendCanvas = (sessionId: string, img: string) => {
+  return $api
+    .post(`http://localhost:5000/image?id=${sessionId}`, {
+      img,
+    })
+    .then((response) => console.log(response.data))
+}
 
-    return { data: result.data }
+export const FetchCanvas = (sessionId: string) => {
+  return $api.get(`http://localhost:5000/image?id=${sessionId}`)
+}
+
+export class SocketApi {
+  static Connect = (ws: WebSocket, sessionId: string, userName: string) => {
+    // if (!socket) return
+    ws.send(
+      JSON.stringify({
+        sessionId,
+        username: userName,
+        method: "connection",
+      })
+    )
   }
 
-export const Api = createApi({
-  reducerPath: "chatApiRtk",
-  baseQuery: axiosBaseQuery({
-    baseUrl: API_URL,
-  }),
+  static Finish = (ws: WebSocket, sessionId: string) => {
+    ws.send(
+      JSON.stringify({
+        method: "finish",
+        sessionId,
+      })
+    )
+  }
 
-  tagTypes: [],
-  endpoints: (build) => ({}),
-})
+  static Share = (ws: WebSocket, sessionId: string, img: string) => {
+    ws.send(
+      JSON.stringify({
+        method: "share",
+        sessionId,
+        img,
+      })
+    )
+  }
+
+  static Draw = (ws: WebSocket, sessionId: string, figure: figure) => {
+    ws.send(
+      JSON.stringify({
+        method: "draw",
+        sessionId,
+        figure,
+      })
+    )
+  }
+}
