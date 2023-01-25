@@ -11,7 +11,7 @@ const SocketController = require('./Socket-controller')
 app.use(cors())
 app.use(express.json())
 
-app.ws('/', (ws, req) => {
+app.ws('/', (ws) => {
     ws.on('message', (msg) => SocketController.onMessage(msg, ws, aWss))
 })
 
