@@ -11,12 +11,7 @@ const useBrush = () => {
     ctx.strokeStyle = isEraser ? "white" : color
   }
 
-  const Draw = (
-    X: number,
-    Y: number,
-    styles: styles,
-    isEraser: boolean = false
-  ) => {
+  const Draw = (X: number, Y: number, styles: styles, isEraser = false) => {
     if (!ctx) return
 
     SetStyles(styles, isEraser)

@@ -1,6 +1,5 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit"
-import {WritableDraft} from "immer/dist/types/types-external"
-import {drawType} from "./types"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { drawType } from "./types"
 
 interface initialStateType {
   drawType: drawType
@@ -22,7 +21,6 @@ const ContextSlice = createSlice({
   name: "SocketSlice",
   initialState,
   reducers: {
-
     setType(state, action: PayloadAction<drawType>) {
       state.drawType = action.payload
     },
@@ -40,11 +38,6 @@ const ContextSlice = createSlice({
     },
   },
 })
-export const {
-  setType,
-  setUserName,
-  setSessionId,
-  setSocket,
-  setIsDrawing,
-} = ContextSlice.actions
+export const { setType, setUserName, setSessionId, setSocket, setIsDrawing } =
+  ContextSlice.actions
 export default ContextSlice.reducer

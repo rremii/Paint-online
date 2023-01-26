@@ -1,6 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { WritableDraft } from "immer/dist/types/types-external"
-import { drawType } from "./types"
 
 interface initialStateType {
   lineWidth: number

@@ -11,4 +11,3 @@ export default function Home() {
 
   return <></>
 }
-const Wrapper = styled.div``
