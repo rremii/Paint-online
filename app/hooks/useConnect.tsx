@@ -8,7 +8,12 @@ import useCircle from "./useCircle"
 import useLine from "./useLine"
 import { message } from "../store/types"
 import { SendCanvas, SocketApi } from "../api/config/Api"
-import { setIsDrawing, setSessionId, setSocket } from "../store/SocketSlice"
+import {
+  setFetchDrawing,
+  setIsDrawing,
+  setSessionId,
+  setSocket,
+} from "../store/SocketSlice"
 import { API_URL_WS } from "../api/config"
 
 const useConnect = () => {
@@ -21,6 +26,8 @@ const useConnect = () => {
   const { savedCanvas } = useTypedSelector((state) => state.Context)
   const { ctx } = useTypedSelector((state) => state.Context)
   const { canvas } = useTypedSelector((state) => state.Context)
+  const { isFetchDrawing } = useTypedSelector((state) => state.Socket)
+  const { isDrawing } = useTypedSelector((state) => state.Socket)
 
   const [DrawBrush] = useBrush()
   const [DrawRect] = useRect()
@@ -62,6 +69,7 @@ const useConnect = () => {
         case "finish":
           ctx?.beginPath()
           dispatch(setIsDrawing(false))
+          setFetchDrawing(false)
           dispatch(saveCanvas())
           if (sessionId && canvas)
             SendCanvas(sessionId, canvas.toDataURL()).then((response) =>
@@ -86,11 +94,14 @@ const useConnect = () => {
     if (!msg.figure) return
     const { drawType, startX, startY, X, Y, styles } = msg.figure
 
-    ctx?.beginPath()
-    if (drawType === "brush") DrawBrush(X, Y, styles)
     if (drawType === "rect") DrawRect(startX, startY, X, Y, styles)
     if (drawType === "circle") DrawCircle(startX, startY, X, Y, styles)
     if (drawType === "line") DrawLine(startX, startY, X, Y, styles)
+    if (!isFetchDrawing && !isDrawing) {
+      ctx?.beginPath()
+      dispatch(setFetchDrawing(true))
+    }
+    if (drawType === "brush") DrawBrush(X, Y, styles)
     if (drawType === "eraser") DrawBrush(X, Y, styles, true)
   }
 }

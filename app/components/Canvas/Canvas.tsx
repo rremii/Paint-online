@@ -18,6 +18,7 @@ const Canvas: FC = () => {
   const { lineWidth } = useTypedSelector((state) => state.Styles)
   const { color } = useTypedSelector((state) => state.Styles)
   const { canvas } = useTypedSelector((state) => state.Context)
+  const { ctx } = useTypedSelector((state) => state.Context)
 
   const canvasRef = useRef<null | HTMLCanvasElement>(null)
   const { width, height } = useResize()
@@ -46,7 +47,6 @@ const Canvas: FC = () => {
 
   const Draw = (e: MouseEvent) => {
     if (!isDrawing || !socket || !sessionId) return
-
     const offsetLeft = (window.innerWidth - 1280) / 2
     const X = window.innerWidth >= 1280 ? e.clientX - offsetLeft : e.clientX
     const Y = e.clientY - 80
