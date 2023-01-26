@@ -86,7 +86,6 @@ const useConnect = () => {
     if (!msg.figure) return
     const { drawType, startX, startY, X, Y, styles } = msg.figure
 
-    dispatch(setIsDrawing(true))
     if (drawType === "brush") DrawBrush(X, Y, styles)
     if (drawType === "rect") DrawRect(startX, startY, X, Y, styles)
     if (drawType === "circle") DrawCircle(startX, startY, X, Y, styles)
