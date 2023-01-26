@@ -15,7 +15,6 @@ export const FetchCanvas = (sessionId: string) => {
 
 export class SocketApi {
   static Connect = (ws: WebSocket, sessionId: string, userName: string) => {
-    // if (!socket) return
     ws.send(
       JSON.stringify({
         sessionId,
