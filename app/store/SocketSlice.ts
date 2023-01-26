@@ -10,7 +10,7 @@ interface initialStateType {
 }
 
 const initialState = {
-  drawType: "rect",
+  drawType: "brush",
   userName: "",
   sessionId: null,
   socket: null,
