@@ -1,16 +1,16 @@
-import { $api } from "./index"
+import { $api, API_URL } from "./index"
 import { figure } from "../../store/types"
 
 export const SendCanvas = (sessionId: string, img: string) => {
   return $api
-    .post(`http://localhost:5000/image?id=${sessionId}`, {
+    .post(API_URL + `image?id=${sessionId}`, {
       img,
     })
     .then((response) => console.log(response.data))
 }
 
 export const FetchCanvas = (sessionId: string) => {
-  return $api.get(`http://localhost:5000/image?id=${sessionId}`)
+  return $api.get(API_URL + `image?id=${sessionId}`)
 }
 
 export class SocketApi {
