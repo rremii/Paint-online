@@ -9,6 +9,7 @@ import useLine from "./useLine"
 import { message } from "../store/types"
 import { SendCanvas, SocketApi } from "../api/config/Api"
 import { setIsDrawing, setSessionId, setSocket } from "../store/SocketSlice"
+import { API_URL } from "../api/config"
 
 const useConnect = () => {
   const dispatch = useAppDispatch()
@@ -29,7 +30,7 @@ const useConnect = () => {
   useEffect(() => {
     if (!userName || !router.query.id) return
 
-    const socket = new WebSocket(`ws://localhost:5000/`)
+    const socket = new WebSocket(API_URL)
     dispatch(setSocket(socket))
     const id = router.query.id as string
     dispatch(setSessionId(id))
