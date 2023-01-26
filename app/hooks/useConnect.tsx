@@ -60,8 +60,8 @@ const useConnect = () => {
           shareHandler(msg)
           break
         case "finish":
-          dispatch(setIsDrawing(false))
           ctx?.beginPath()
+          dispatch(setIsDrawing(false))
           dispatch(saveCanvas())
           if (sessionId && canvas)
             SendCanvas(sessionId, canvas.toDataURL()).then((response) =>
@@ -86,7 +86,7 @@ const useConnect = () => {
     if (!msg.figure) return
     const { drawType, startX, startY, X, Y, styles } = msg.figure
 
-    // ctx?.beginPath()
+    ctx?.beginPath()
     if (drawType === "brush") DrawBrush(X, Y, styles)
     if (drawType === "rect") DrawRect(startX, startY, X, Y, styles)
     if (drawType === "circle") DrawCircle(startX, startY, X, Y, styles)
