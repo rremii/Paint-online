@@ -98,7 +98,7 @@ const useConnect = () => {
     if (drawType === "circle") DrawCircle(startX, startY, X, Y, styles)
     if (drawType === "line") DrawLine(startX, startY, X, Y, styles)
     if (!isFetchDrawing && !isDrawing) {
-      ctx?.beginPath()
+      ctx?.moveTo(X, Y)
       dispatch(setFetchDrawing(true))
     }
     if (drawType === "brush") DrawBrush(X, Y, styles)
