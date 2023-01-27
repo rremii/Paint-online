@@ -49,14 +49,14 @@ const ContextSlice = createSlice({
       if (canvas) state.undoList.push(canvas.toDataURL())
     },
 
-    addToRedo(state) {
-      const savedCanvas = state.savedCanvas
-      if (savedCanvas) state.undoList.push(savedCanvas)
-    },
+    // addToRedo(state) {
+    //   const savedCanvas = state.savedCanvas
+    //   if (savedCanvas) state.undoList.push(savedCanvas)
+    // },
   },
 })
 export const {
-  addToRedo,
+  // addToRedo,
   removeLastRedo,
   removeLastUndo,
   addToUndo,

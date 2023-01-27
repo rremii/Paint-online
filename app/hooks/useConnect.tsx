@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useAppDispatch, useTypedSelector } from "../store/ReduxStore"
 import { useRouter } from "next/router"
-import { saveCanvas } from "../store/contextSlice"
+import { addToUndo, saveCanvas } from "../store/contextSlice"
 import useBrush from "./useBrush"
 import useRect from "./useRect"
 import useCircle from "./useCircle"
@@ -71,7 +71,7 @@ const useConnect = () => {
         case "start":
           ctx?.beginPath()
           dispatch(setIsDrawing(true))
-
+          dispatch(addToUndo())
           break
       }
     }
