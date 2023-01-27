@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react"
 import { useAppDispatch, useTypedSelector } from "../store/ReduxStore"
-import { addToUndo, saveCanvas } from "../store/contextSlice"
+import { saveCanvas } from "../store/contextSlice"
 import { SocketApi } from "../api/config/Api"
-import { setIsDrawing } from "../store/SocketSlice"
 
 const useStartDrawing = () => {
   const dispatch = useAppDispatch()
