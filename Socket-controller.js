@@ -17,6 +17,9 @@ class SocketController {
             case "finish":
                 SocketServer.broadcastConnection(ws, msg,aWss)
                 break
+            case "start":
+                SocketServer.broadcastConnection(ws, msg,aWss)
+                break
         }
     }
 
