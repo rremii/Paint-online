@@ -7,7 +7,6 @@ interface initialStateType {
   sessionId: string | null
   socket: WebSocket | null
   isDrawing: boolean
-  isFetchDrawing: boolean
 }
 
 const initialState = {
@@ -16,7 +15,6 @@ const initialState = {
   sessionId: null,
   socket: null,
   isDrawing: false,
-  isFetchDrawing: false,
 } as initialStateType
 
 const ContextSlice = createSlice({
@@ -38,17 +36,8 @@ const ContextSlice = createSlice({
     setIsDrawing(state, action: PayloadAction<boolean>) {
       state.isDrawing = action.payload
     },
-    setFetchDrawing(state, action: PayloadAction<boolean>) {
-      state.isFetchDrawing = action.payload
-    },
   },
 })
-export const {
-  setFetchDrawing,
-  setType,
-  setUserName,
-  setSessionId,
-  setSocket,
-  setIsDrawing,
-} = ContextSlice.actions
+export const { setType, setUserName, setSessionId, setSocket, setIsDrawing } =
+  ContextSlice.actions
 export default ContextSlice.reducer

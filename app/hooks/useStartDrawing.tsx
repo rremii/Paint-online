@@ -19,8 +19,8 @@ const useStartDrawing = () => {
     setClientX(X)
     setClientY(Y)
     dispatch(saveCanvas())
-    dispatch(setIsDrawing(true))
     dispatch(addToUndo())
+    if (socket && sessionId) SocketApi.startDraw(socket, sessionId)
   }
   const handleMouseUp = () => {
     if (!socket || !sessionId) return

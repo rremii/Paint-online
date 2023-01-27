@@ -42,6 +42,14 @@ export class SocketApi {
       })
     )
   }
+  static startDraw = (ws: WebSocket, sessionId: string) => {
+    ws.send(
+      JSON.stringify({
+        method: "start",
+        sessionId,
+      })
+    )
+  }
 
   static Draw = (ws: WebSocket, sessionId: string, figure: figure) => {
     ws.send(

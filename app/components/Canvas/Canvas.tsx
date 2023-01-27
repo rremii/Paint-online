@@ -18,7 +18,6 @@ const Canvas: FC = () => {
   const { lineWidth } = useTypedSelector((state) => state.Styles)
   const { color } = useTypedSelector((state) => state.Styles)
   const { canvas } = useTypedSelector((state) => state.Context)
-  const { ctx } = useTypedSelector((state) => state.Context)
 
   const canvasRef = useRef<null | HTMLCanvasElement>(null)
   const { width, height } = useResize()
